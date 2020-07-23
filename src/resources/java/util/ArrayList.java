@@ -132,6 +132,7 @@ public class ArrayList<E> extends AbstractList<E>
      * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
      * will be expanded to DEFAULT_CAPACITY when the first element is added.
      */
+    // 装对象的数组 这个数组长度跟真实集合的元素个数不等
     transient Object[] elementData; // non-private to simplify nested class access
 
     /**
@@ -139,6 +140,7 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * @serial
      */
+    // 真实的集合元素个数
     private int size;
 
     /**
@@ -236,7 +238,7 @@ public class ArrayList<E> extends AbstractList<E>
 
         // overflow-conscious code
         if (minCapacity - elementData.length > 0)
-            grow(minCapacity);
+            grow(minCapacity);// 对于grow方法在第一次添加元素时候会执行,然后就是添加第11个元素时候执行
     }
 
     /**
@@ -253,13 +255,13 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * @param minCapacity the desired minimum capacity
      */
-    private void grow(int minCapacity) {
+    private void grow(int minCapacity) {// 1.5倍扩容
         // overflow-conscious code
         int oldCapacity = elementData.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         if (newCapacity - minCapacity < 0)
-            newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = minCapacity;// 若扩容后的容量还是小于minCapacity就把minCapacity当做新容量
+        if (newCapacity - MAX_ARRAY_SIZE > 0)// 这个地方就是判断新容量是否>Integer.MaxValue-8
             newCapacity = hugeCapacity(minCapacity);
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
@@ -477,6 +479,9 @@ public class ArrayList<E> extends AbstractList<E>
         rangeCheckForAdd(index);
 
         ensureCapacityInternal(size + 1);  // Increments modCount!!
+        // arraycopy()复制是数组自己复制自己 在本书组上进行index及以后的元素挪到index+1及后面上
+        // param1:源数组
+        // param3:目标数组
         System.arraycopy(elementData, index, elementData, index + 1,
                          size - index);
         elementData[index] = element;

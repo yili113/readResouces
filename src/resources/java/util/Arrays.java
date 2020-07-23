@@ -3281,7 +3281,7 @@ public class Arrays {
      * @since 1.6
      */
     public static int[] copyOf(int[] original, int newLength) {
-        int[] copy = new int[newLength];
+        int[] copy = new int[newLength];// copyOf是新建了一个数组
         System.arraycopy(original, 0, copy, 0,
                          Math.min(original.length, newLength));
         return copy;
